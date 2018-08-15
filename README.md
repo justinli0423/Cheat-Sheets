@@ -12,6 +12,10 @@ Gathering of useful cheat sheets, guides, and other useful links for web develop
     - [Resizr](http://resizr.co/)
   
 ## Back-end
+
+## Design
+  - [Figma Sources](https://www.figmaresources.com/)
+  - [Sketch Sources](https://www.sketchappsources.com/tag/web.html)
   
 ## Others
   - Markdown Cheatsheet
