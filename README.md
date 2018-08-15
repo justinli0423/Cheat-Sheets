@@ -18,7 +18,8 @@ Gathering of useful cheat sheets, guides, and other useful links for web develop
   - [Sketch Sources](https://www.sketchappsources.com/tag/web.html)
   
 ## Others
-  - Markdown Cheatsheet
+  - Markdown cheatsheet
     - [1](https://www.markdownguide.org/cheat-sheet/)
     - [2](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet#links)
-  - [Vim Cheatsheet](https://vim.rtorr.com/)
+  - [Vim cheatsheet](https://vim.rtorr.com/)
+  - [ASCII art generator](http://patorjk.com/software/taag/)
