@@ -12,6 +12,7 @@ Gathering of useful cheat sheets, guides, and other useful links for web develop
     - [Resizr](http://resizr.co/)
   
 ## Back-end
+  - [Ruby (Rails)](https://github.com/Jli0423/Cheat-Sheets/blob/master/Ruby%20(Rails).md)
 
 ## Design
   - [Figma Sources](https://www.figmaresources.com/)
