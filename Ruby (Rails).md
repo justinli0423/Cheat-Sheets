@@ -1,4 +1,4 @@
-# Ruby (on Rails) Stuff
+# Ruby/Rails Stuff
 
 ### Version Managers
 - RVM (Ruby Version Manager): 
@@ -34,3 +34,61 @@
   - platform
   - version number
   - etc...
+
+---
+### Sprockets and the Asset Pipeline
+  - Sprockets: gem for compliling and serving assets
+  - Contains preprocessor pipeline for **Sass** and **Slim**
+  - Concatenation, hashing, and minification of JS and CSS
+  
+---
+### Rails
+  - Technically a gem but referred to as a web application framework
+  - Structure for MVC, routes, and configs
+  - Provide helpers to generate migrations/models of the framework
+  - Convention over configuration: Framework will assume/make decisions by convention instead of forcing the user to provide configuration files
+  
+---
+### Models
+  - *Usually* used as a one to one object model for rows of a database table
+    - Only maps one row of a table to one row of another table
+  - ActiveRecord - The **M** in MVC:
+    - Data access via chainable queries
+    - Data writing via model functions (`update`, `save`, or `destroy)
+    - Migrations
+    - Callbacks
+    - Validation (Check that model matches requirements before it is written)
+
+---
+### Controllers
+  - Class that receives and thus request after routing
+  - Defines the actions to respond to different requests
+  - Interacts with the model on behalf of view
+  - **REST** actions: index, create/new, show, destroy, edit/update
+    - Actions will receive a `params` object from requests and should be validated before actions
+    
+---
+### Views
+  - Contains data that user would receive from request 
+  - *Convention: named after controller action* - Does not require explicit `render` call in controller action method
+  - Will have both JSON and HTML views
+  
+---
+### Routes
+  - Action definer: Mapping URLs to methods in controller
+  - Rails provides:
+    - Helper functions for resources (controllers): Collection and member
+    - Namespaces: Organization tool for grouping controllers
+      - e.g. Grouping all the resources with *admin* rights
+      ```
+      namespace :admin do
+          resources :articles, :comments
+      end
+      ```
+      
+---
+### Punit Policies and Scopes
+  - Pundit: gem that allows action policies to be defined as well as errors on failures
+  - Policy method mathes action name
+  - Scopes return limited ActiveRecord object of the model based on the current user
+  - Removes permission logic from controllers
