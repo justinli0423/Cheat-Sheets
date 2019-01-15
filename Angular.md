@@ -22,5 +22,5 @@
         console.log(this, $scope);
       }
       ```
-    - First output will bethe same as the `$scope` and `this` are within the same controller
+    - First output will be the same as the `$scope` and `this` are of the same controller
     - Second output will *not* be the same since when the function is called, the `$scope` is within `ChildCtrl` while the `this` object is attached to `ParentCtrl`
