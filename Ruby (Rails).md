@@ -85,7 +85,18 @@
           resources :articles, :comments
       end
       ```
-      
+    - `resources :symbol`: Automatically creates 7 actions for the symbol as follows:
+      - e.g. when calling `resources :photos` the following will be created:
+      - | HTTP Verb | Path             | Action  | Used For                             |
+        |-----------|------------------|---------|--------------------------------------|
+        | GET       | /photos          | index   | display list of all photos           |
+        | GET       | /photos/new      | new     | return a view for creating new photo |
+        | POST      | /photos          | create  | create a new photo                   |
+        | GET       | /photos/:id      | show    | display a specific photo             |
+        | GET       | /photos/:id/edit | edit    | return a view for editing photo      |
+        | PUT       | /photos/:id      | update  | update a specific photo              |
+        | DELETE    | /photos/:id      | destroy | delete a specific photo              |
+
 ---
 ### Punit Policies and Scopes
   - Pundit: gem that allows action policies to be defined as well as errors on failures
