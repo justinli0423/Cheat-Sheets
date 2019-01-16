@@ -15,6 +15,9 @@ Gathering of useful cheat sheets, guides, and other useful links for web develop
 ## Back-end
   - [Ruby (Rails)](https://github.com/Jli0423/Cheat-Sheets/blob/master/Ruby%20(Rails).md)
 
+## Database
+  - [SQL](https://github.com/Jli0423/Cheat-Sheets/blob/master/SQL.md)
+
 ## Design
   - [Figma Sources](https://www.figmaresources.com/)
   - [Sketch Sources](https://www.sketchappsources.com/tag/web.html)
