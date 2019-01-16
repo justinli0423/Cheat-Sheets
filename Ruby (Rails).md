@@ -96,7 +96,7 @@
         | GET       | /photos/:id/edit | edit    | return a view for editing photo      |
         | PUT       | /photos/:id      | update  | update a specific photo              |
         | DELETE    | /photos/:id      | destroy | delete a specific photo              |
-
+    - To view all routes, start up server with `rails s` and head to `localhost:port/tasks`
 ---
 ### Punit Policies and Scopes
   - Pundit: gem that allows action policies to be defined as well as errors on failures
