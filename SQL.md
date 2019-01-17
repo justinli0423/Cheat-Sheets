@@ -1,7 +1,7 @@
 # SQL stuff
 
 ### Important SQL commands
- - [SELECT](###SELECT) - extracts data from a database
+ - [SELECT](###&#32;SELECT) - extracts data from a database
  - [UPDATE](###UPDATE) - updates data in a database
  - [DELETE](###DELETE) - deletes data from a database
  - [INSERT INTO](###INSERT&#32;INTO) - inserts new data into a database
@@ -143,3 +143,58 @@
 
 ### GROUP BY
  - Often used with COUNT, MAX, MIN, SUM, AVG functions to group the result-set by one or more columns
+   - `SELECT <col_name(s)> FROM <table_name> WHERE condition GROUP BY <col_name(s) ORDER BY <col_name(s);`
+
+### HAVING
+ - Same idea as `WHERE` but for aggregation functions such as COUNT, MAX, MIN...
+   - `SELECT <col_name(s)> FROM <table_name> WHERE condition GROUP BY <col_name(s)> HAVING condition ORDER BY <col_name(s)>;`
+   - e.g. `SELECT COUNT(id), name FROM <table> GROUP BY name HAVING COUNT(id) > 5;`
+
+### EXISTS
+ - Used to test for the existence of any record in a *subquery*
+ - Returns boolean (and the table of results that matches the test conditions)
+   - `SELECT <col_name(s)> FROM <table_name> WHERE EXISTS (SELECT <col_name> FROM <table_name> WHERE condition);`
+
+### ANY and ALL
+ - `ANY`: returns TRUE if *any* of the subquery values meet the condition`
+ - `ALL`: returns TRUE if *all* of the subquery values meet the condition`
+   - `SELECT <col_name> FROM <table> WHERE id = ANY/ALL (SELECT id FROM <table_2> WHERE condition);`
+
+### SELECT INTO
+ - Used for copying data from one table to a **new** table
+   - `SELECT <col_name(s)> INTO <new_table>  [IN <db_name>] FROM <old_table> WHERE condition;`
+
+### INSERT INTO SELECT
+ - Used for copying data from one table to another
+ - Requires data types in source and target tables to match
+ - Existing records in the target table remains unaffected
+   - `INSERT INTO <table_2> SELECT <col_name(s)> FROM <table_1> WHERE condition;`
+
+### CASE
+ - Same as a regular `case` in other languages - Goes through conditions until a condition is met, otherwise returns the `ELSE` clause
+    ```
+    CASE
+        WHEN condition1 THEN result1
+        WHEN condition2 THEN result2
+        etc..
+        ELSE result
+    END;
+    ```
+     
+### NULL function
+ - `IFNULL()`: allows user to return an alternate function if value == null
+
+### STORED PROCEDURE
+ - A function
+     ```
+     CREATE PROCEDURE name
+     AS
+     <sql_statements>
+     GO;
+     ```
+ - To run the procedure: `EXEC procedure_name;`
+
+
+### COMMENTS
+ - Use `--` for single line
+ - User `/* ... */` for multi-line
