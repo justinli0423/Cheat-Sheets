@@ -97,9 +97,55 @@
         | PUT       | /photos/:id      | update  | update a specific photo              |
         | DELETE    | /photos/:id      | destroy | delete a specific photo              |
     - To view all routes, start up server with `rails s` and head to `localhost:port/tasks`
+    
+*Payload: Actual data transferred over API*
 ---
 ### Punit Policies and Scopes
   - Pundit: gem that allows action policies to be defined as well as errors on failures
   - Policy method mathes action name
   - Scopes return limited ActiveRecord object of the model based on the current user
   - Removes permission logic from controllers
+
+### Modules
+  - Similar to classes: hold a collection of methods, constants, and other modules and class definitions.
+  - Difference: Modules only hold library of methods and cannot be instantiated
+  
+### Instance Variables `@`
+  - Not the same as local:
+    - Local only exists inside the scope (current block)
+  - Instance variables are available anywhere in the class (and can be defined anywhere in the class)
+    - ```
+      class Customer
+        def initialize(id, name, addr)
+          @cust_id = id
+          @cust_name = name
+          @cust_addr = addr
+        end
+
+        def display_details
+          puts "Customer id #{@cust_id}"
+          puts "Customer name #{@cust_name}"
+          puts "Customer address #{@cust_addr}"
+        end
+      end
+      ```
+      
+ ### `begin` - `rescue` - `else` - `ensure` - `end`
+  - ```
+    begin
+      # something which might raise an exception
+    rescue SomeExceptionClass => some_variable
+      # code that deals with some exception
+    rescue SomeOtherException => some_other_variable
+      # code that deals with some other exception
+    else
+      # code that runs only if *no* exception was raised
+    ensure
+      # ensure that this code always runs, no matter what
+      # does not change the final value of the block
+    end
+    ```
+    
+### Class Inheritance
+  - Ruby only allows *single* inheritance
+    - `class newClass < toBeInheritedClass`
