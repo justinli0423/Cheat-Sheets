@@ -84,7 +84,74 @@
   typeof alert // "function"  (3)  
   ```
 
+## Boolean
+- "0" is true
+- " " also true(any non-empty string)
 
+## Conversion
+- having "+" with a string always results a string(e.g. '3' + 2 = '32')
+- it still runs left to right (2 + 2 + '3' = '43')
+- all other operators convert to numbers
+
+## Increment / decrement
+- count++ is the same as ++count unless the return value is used
+- count++ returns count and then add
+- ++count returns count + 1
+
+## Comma operator
+- evaluate multiple expressions, but keep only the last one
+
+## String comparison
+- lexicographical order(O(n) -> compares every string until one differs)
+- it compares to the index of the js 'dictionary'(unicode)
+- lowercase > uppercase
+  
+*Special: "0" is true but 0 is false. but 0 == "0"*
+
+## == (regular) vs === (strict)
+- `==` uses type conversion
+- `===` compares types first
+- `null === undefined`: false
+- `null == undefined`: true
+- in math comparisons: null -> 0 and undefined -> NaN
+- `null == 0` is false while `null >= 0` is true
+*Special: equality check does not convert to number while comparisons (>, >=, etc) does*
+
+## Conditionals
+- 0, empty string, null, undefined, NaN are all falsy
+- conditional(ternary) operator should only be used with assignment, not function calls (designed this way, but it still works)
+- ternary *cannot* contain break/continues even if it's in a loop, must use `if`
+
+## OR operator(find first truthy value)
+- if used as assignment, it will return the first 'truthy' evaluation or the last operand (e.g. x will be undefined under `true || (x = 1)`)
+
+## AND operator(find first falsy value)
+- if used as assignment, it will return the first 'falsy' evaluation or the last operand
+
+*Special: the precedence of && is higher than || so use brackets*
+
+## Labels
+- used for references outer loops in nested loops
+- can directly break up to the labeled loop using `break <label>`
+- usage: `<label> : for(let...)...`
+- must be of higher scoped to break/continue (not a "skip to line x")
+
+## Switch 
+- must include `break` or it will run all the cases under the truth one
+  - can be used to group cases together
+- case comparisons are strict (no object conversion)
+
+## Function scoping
+- will use outer variables unless local one is defined(shadowing)
+- if local one is defined, it is *not* linked to the outer variable
+- functions will always get a *copy* when passed in parameter(only primitive types)
+
+## Default values
+- can define defaults to be anything (not just string, can be function return value)
+
+## Return statement
+- if a return value is not provided or no return statement, it returns `undefined`;
+- multi-lined must be enclosed in ()
 
 ---
 # Extras
