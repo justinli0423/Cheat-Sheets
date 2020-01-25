@@ -2,6 +2,7 @@
 Gathering of useful cheat sheets, guides, and other useful links for web development
 
 ## Front-end
+  - [Vanilla JS](../Cheat-Sheets/Javascript.md)
   - [Angular](https://github.com/Jli0423/Cheat-Sheets/blob/master/Angular.md)
   - [FlexBox](https://css-tricks.com/snippets/css/a-guide-to-flexbox/)
   - [Color code finder](https://color.adobe.com/create/color-wheel/)
