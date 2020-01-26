@@ -115,6 +115,7 @@
 - `null == undefined`: true
 - in math comparisons: null -> 0 and undefined -> NaN
 - `null == 0` is false while `null >= 0` is true
+
 *Special: equality check does not convert to number while comparisons (>, >=, etc) does*
 
 ## Conditionals
@@ -153,7 +154,7 @@
 - if a return value is not provided or no return statement, it returns `undefined`;
 - multi-lined return statements must be enclosed in ()
 
-## Function
+## Functions
 - declarations: `function test() {}` 
   - this is visible to everywhere inside the scope, before or after
   - JS looks for global func declarations and creates it first
@@ -164,8 +165,72 @@
 - can copy functions (e.g. `let y = x;` or `let y = test;` will give y the function of x)
 - function expressions require ';' because it's an assignment, so it is used to terminate the statement
 
+## Objects
+- always stored/accessed by reference to memeory
+- object comparisons are done by checking memory, not value
+- `const` objects *properties* can be changed - memory doesn't change since reference is same
+  - allowed: `const_object.key = "new value";`
+  - not allowed: `const_object = { key: "same value" };`
+- simple cloning (depth of 1):
+  - option 1: iterate and assign to new object
+  - option 2: `Object.assign(destination, [object1, object2, ...]);`
+    - takes all properties of the array of objects and puts into destination object
+    - duplicate keys will be *overwritten*
+    - returns the new object
+    - this operates the same as option 1, but looks nice
+- keys do not require quotes unless it contains spaces
+- accessing multi-word keys should be done with `object['key with spaces']`
+- `delete object.property`
+  - returns true if successful, false otherwise
+  - nothing to do with freeing memory, only breaks the reference (otherwise properties would be floating randomly in memory)
+- object property names have no restrictions (can use keywords)
+- way to test if key has been created (regardless of value): `"property" in object`
+- looping through objects:
+  - `for (let key in object) {}`
+  - only integral keys are sorted (means if we convert to number and back, it's still the same)
+    - can be bypassed by appending "+" infront of the integers so that it's not the same after `f(f^-1(x))`
+  - other keys are kepy in creation order
+- **property value shorthand**
+  - if input param is the same as keyname, you can ignore the value input
+  - ```js
+    function makeUser(name, age) {
+    return {
+      name, // same as name: name
+      age   // same as age: age
+      // ...
+    };
+    ```
+}
+- **computed properties**
+  - can use `[]` to use computed property as the key instead of the word itself
+  ```js
+  let fruit = prompt("Which fruit to buy?", "apple");
+
+  let bag = {
+    [fruit]: 5, // the name of the property is taken from the variable fruit
+  };
+
+  alert( bag.apple ); // 5 if input to prompt was apple
+  ```
+
 ---
 # Extras
+
+## Garbage Collection
+  - *reachability*: any values that can be accessed (in any way) will be stored in memeory (e.g. references, local variables, etc)
+    - e.g. if an (and only) object reference is overwritten, then garbage collector will clear the old object since it's unreachable
+  - the outgoing links do *not* matter, if the object cannot be accessed it's garbage
+  - the *mark-and-sweep* algorithm
+    - garbage collector (gc) will mark all roots
+    - traverse through the graph and marks all references
+      - repeats until all reachable references are visited
+    - all objects that are *unmarked* will be freed
+  - additional optimizations to MS algo
+    - generational collection: split objects into "new" and "old"
+      - the old ones are checked less often
+    - incremental collection: 
+      - break apart massive objects so that engine isn't delayed for a long time but instead `n * short periods`
+    - idle-time collection: only run the MS algorithm when CPU is idle so that user isn't effected
 
 ## Cache:
 - files will be cached when attached as a source using the `script` tag
