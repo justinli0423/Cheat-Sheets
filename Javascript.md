@@ -1,4 +1,6 @@
-# JavaScript - Interpreted
+# <JavaScript - Interpreted />
+
+# The Fundamentals
 
 ## Script tag
 - inline JavaScript
@@ -164,6 +166,9 @@
 - function is a "special value": when calling it without (), it shows the source code as a string
 - can copy functions (e.g. `let y = x;` or `let y = test;` will give y the function of x)
 - function expressions require ';' because it's an assignment, so it is used to terminate the statement
+  
+---
+# Objects: The Basics
 
 ## Objects
 - always stored/accessed by reference to memeory
@@ -213,8 +218,97 @@
   alert( bag.apple ); // 5 if input to prompt was apple
   ```
 
+## Objects - `this`
+ - references the object it is scoped in
+ - `this` is evaluated at call time, not the position of declaration
+ - can be called inside any function
+   - if the function is not assigned to an object, it will return `undefined`
+ - arrow functions have no `this`, it will reference the outer 'normal' function
+
+### Advanced `this`
+  - ```js
+    let user = {
+    name: "John",
+    hi() { alert(this.name); },
+    bye() { alert("Bye"); }
+    };
+
+    user.hi(); // John (the simple call works)
+
+    // now let's call user.hi or user.bye depending on the name
+    (user.name == "John" ? user.hi : user.bye)(); // Error!
+    ```
+  - object dot method works (`user.hi()`)
+  - evaluated method doesn't
+  - *tldr*: `obj.method()` uses the `.` to get the property and then `()` to execute it
+  - evaluated methods fail to get this because it becomes `let hi = user.hi` first, which no longer has scoping (global `this` returns undefined)
+    - it assigns it to the IIFE brackets
+  - *JavaScript returns using a special type called the 'reference type' which is how the dot and bracket operators work on to get the object reference*
+    - `function.bind()` is a useful tool
+
+## Object to Primitive conversion
+  - happens when operations occur between objects (`obj1 + obj2`)
+  - all objects are true in boolean context
+  - operators usually cause numeric conversion
+  - outputs usually cause string conversion
+  - 3 types of conversions (called 'hints')
+    - string
+    - number
+    - default - when not sure what to do
+  - *no boolean hint because all objects are default true*
+  - JS tries all 3 object methods through `obj[Symbol.toPrimitive](hint)`
+    - this can be self defined within the object as well
+    - hint = string: tries `obj.toString()` before `obj.valueOf()`
+    - hint = number/default: tries `obj.valueOf()` before `obj.toString()`
+  - primitive conversion methods do not *necessarily* return the "hinted" primitive, but they *must* return some sort of primitive
+  - ```js
+    const user = {
+      name: 'jhon',
+      salary: 1000,
+
+      [Symbol.toPrimitive](hint) {
+        return hint === 'string' ? this.name : this.salary;
+      },
+      toString() {
+        return this[Symbol.toPrimitive]('string');
+      },
+      valueOf() {
+        return this[Symbol.toPrimitive]('number');
+      },
+    };
+    ```
+
+### toString / valueOf
+  - `toString()` returns a string `[object Object]` unless overwritten
+  - `valueOf()` returns the object itself unless overwritten
+  - to fully convert, we should implement these methods inside the object and JS will use these during the `toPrimitive` operation
+  - `toString()` will handle all conversions if other methods are absent
+
+## Constructor and `new`
+  - Constructor function
+    - named capital letter
+    - only executed with `new` keyword
+  - When `new` is called on constructor functions
+    1. new empty object is created
+    2. constructor function is executed and `this` will reference the new object
+    3. returns `this` 
+  - technically any function can be ran with `new`
+
+---
+# Data Types
+
+## Primitive Methods
+
+
+
 ---
 # Extras
+
+## Console.log()
+  - not the same as `alert()`
+    - it does not "expect" a certain type
+    - will print it to the console (object -> prints object tree)
+    - `alert()` expects a string
 
 ## Garbage Collection
   - *reachability*: any values that can be accessed (in any way) will be stored in memeory (e.g. references, local variables, etc)
