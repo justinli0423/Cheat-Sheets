@@ -122,17 +122,17 @@
 - conditional(ternary) operator should only be used with assignment, not function calls (designed this way, but it still works)
 - ternary *cannot* contain break/continues even if it's in a loop, must use `if`
 
-## OR operator(find first truthy value)
+## OR operator (find first truthy value)
 - if used as assignment, it will return the first 'truthy' evaluation or the last operand (e.g. x will be undefined under `true || (x = 1)`)
 
-## AND operator(find first falsy value)
+## AND operator (find first falsy value)
 - if used as assignment, it will return the first 'falsy' evaluation or the last operand
 
 *Special: the precedence of && is higher than || so use brackets*
 
 ## Labels
 - used for references outer loops in nested loops
-- can directly break up to the labeled loop using `break <label>`
+- can directly break up to the labeled loop using `break <label>;`
 - usage: `<label> : for(let...)...`
 - must be of higher scoped to break/continue (not a "skip to line x")
 
@@ -142,7 +142,7 @@
 - case comparisons are strict (no object conversion)
 
 ## Function scoping
-- will use outer variables unless local one is defined(shadowing)
+- will use outer variables unless local one is defined (shadowing)
 - if local one is defined, it is *not* linked to the outer variable
 - functions will always get a *copy* when passed in parameter(only primitive types)
 
@@ -151,7 +151,18 @@
 
 ## Return statement
 - if a return value is not provided or no return statement, it returns `undefined`;
-- multi-lined must be enclosed in ()
+- multi-lined return statements must be enclosed in ()
+
+## Function
+- declarations: `function test() {}` 
+  - this is visible to everywhere inside the scope, before or after
+  - JS looks for global func declarations and creates it first
+  - in `use strict`, declarations are only available inside code block
+- expressions: `let x = function() {};`
+  - same as assignment; will not exist until the statement has been processed
+- function is a "special value": when calling it without (), it shows the source code as a string
+- can copy functions (e.g. `let y = x;` or `let y = test;` will give y the function of x)
+- function expressions require ';' because it's an assignment, so it is used to terminate the statement
 
 ---
 # Extras
