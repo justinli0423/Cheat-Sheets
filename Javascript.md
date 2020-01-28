@@ -60,6 +60,7 @@
 
 ## Strings / Characters
 - no such thing as a char type in JS
+- it is immutable: `a+="asdfaDS"` actually makes a new string
 
 ## Null
 - just means empty or nothing or unknown
@@ -298,8 +299,80 @@
 # Data Types
 
 ## Primitive Methods
+- recall 7 types: string, number, null, undefined, NaN, bigInt, bool
+- recall: can store functions inside objects
+- objects are 'heavier' than primitives but has many useful default methods
+- Primitives are *wrapped* inside an "object wrapper" when it is called that provides extra functionality, but it is destroyed right after it returns the requested method
+  - the wrapper works differently per primitive type
+  - goal: provide methods but still lightweight
+- `null` and `undefined` has wrapper objects hence no methods
 
+## Numbers
+- stored as *64 bit double precision floating point numbers*
+- `bigInt` used to represent numbers larger than 2^53
+- scientific notation works in JS: `4e9` for 4 billion
+- hex: `0x`
+- binary: `0b`
+- octal: `0o`
+- `toString(base)`: converts a number to a base `(2 <= base <= 36)`
+- calling number functions:
+  - `123..toString(2)`: first dot is decimal so 2 is required
+  - `(123).toString(2)`
+- floating point loses precision since it is stored as binary: may see potential decimal errors
+  - `number.toFixed(2)`: fix the decimal to remove the precision error
+- just like in double precision floating, +0 and -0 exists in JS, but operators treat it as equal
+- checking numbers:
+  - `isNaN(i)`: the comparison of `NaN === NaN` actually returns false because each `NaN` is unique
+  - `isFinite(value)`: checks if it is a *regular* number
+    - empty / space-only strings are treated as `0` in all numeric methods
+- number conversion: `parseInt()` and `parseFloat()`
+  - using `+` or `Number()` is *strict*, if it is not exactly a number, it fails
+  - `parseInt` and `parseFloat` read a number from string until they can't
+    - if error, the gathered number is returned
+    - returns `nan` when *no* digits could be read
+  - `parseInt` takes a 2nd param of radix to change numeric system
 
+## Strings
+- single quotes and double quotes are essential the same
+- backticks:
+  - allows multiple lines of string (spaces are kept as well)
+  - **tagged templates**
+    - allows a specified template function before first backtick
+    - the function is called automatically, recieves the string and then processes it
+      - *rarely used*
+      - func`string`
+- escaping special characters:
+  - add `\` before
+  - use backticks/different quotes
+  - special characters do take up length of string!
+- `str.length` is a property, not a function (O(1))
+- `str[i]` is the same as `str.charAt(i)`; modern approach is all
+  - `[]` returns undefined if out of bounds
+  - `charAt` returns empty string if out of bounds
+- character iteration `for (let char of "asdf")`
+  - *object iteration is `let prop in obj`*!!!!
+- **strings are immutable**
+- searching for substring (O(n)) 
+  - `str.indexOf(substr, start_pos)` returns first index found
+- checking if substring exists: `str.includes(substr, pos)` returns boolean
+  - starts with substring: `str.startsWith(substr)`
+  - ends with substring: `str.endsWith(substr)`
+- `str.slice(start, end?)`: returns part of the string between start to (but not including) end
+  - does not modify the string
+  - can use negative values to count from the end (starts at position -1 at the back)
+- `str.substr(start, numberOfChars)` is legacy, but it returns u the substring
+- `str.substring(start, end?)`: almost same as slice
+  - start > end is allowed
+  - negatives are not 
+- comparing strings
+  - lowercase > uppercase always (ascii is like this too)
+  - stored in UTF-16
+- internationalization string compare `str.localeCompare(str2)`
+  - str < str2: return negative
+  - str > str2: return positive
+  - str == str2: return 0
+
+## Arrays
 
 ---
 # Extras
