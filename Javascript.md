@@ -32,7 +32,7 @@
   - old
   - always processed at the beginning of script (regardless of actual declaration position or if conditions are met) (hoisting)
   - *assignments* are not hoisted (not pushed to the top): ran sequentially in the order of statement position
-  - has no block scope: only function-scoped or global
+  - has no block scope or loop scope: only function-scoped or global
   - ``` 
     if (true) {
       var test = true; // use "var" instead of "let"
@@ -529,7 +529,7 @@
     };
   }
 
-  let counter = makeCounter();
+  let counter = makeCounter(); // closure happens here 
 
   alert( counter() ); // 0
   alert( counter() ); // 1
@@ -552,6 +552,7 @@
 - All functions are naturally closures in JS except `new Function`
 - if a new reference is made to the same function, a **new LE reference** is made so all the properties are reset for the new reference
 - *Definition: function that remembers its outer variables, and can access them*
+- *Another definition: functions that preserve data*
 
 ## Double function calls
 - ```js
@@ -566,6 +567,36 @@
   alert( sum(1)(2) ); // 3
   alert( sum(5)(-1) ); // 4
   ```
+
+## Global Object
+- built into language/environment
+- browser: `window`
+- global variables can only be defined with `var` (not recommended)
+  - should write it as `window.importantVar = "asdf"`
+    - can directly access as `importantVar` without `window`
+- can be used to test browser compatibility
+  - `if (!window.Promise) {console.log('browser old!)}`
+
+## Function Objects
+- all functions are objects in JS: can access object methods
+  - e.g. `function.name` returns function name
+  - `function.length` returns # of params (rest params don't count)
+- named function expression: `let x = function func() {}`
+  - externally cannot access `func()`
+  - internally allowed `func()` (e.g. recursion)
+  - good for when `x` is reassigned to something else, can still access `func`
+  - does not work for pure function declaration
+
+## new functions
+- will convert the passed in "string" and convert into functional code
+- has no outer lexical environment as it will use the global LE (cannot access outside variables) 
+
+## Cache decorators
+- used for "slow" functions that doesn't change - can cache the result using a wrapper object and a `Map()`
+
+## Function Binding
+- recall: passing function with `this` referencing outer object to another value will lose the scoping
+- same with `setTimeout(object.function, 200)` as it separated the function and passed it into timeout
 ---
 # Extras
 
