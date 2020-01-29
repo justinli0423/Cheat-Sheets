@@ -515,7 +515,57 @@
   - similar to `this`, will reference outer "normal" function
 
 ## Variable Scope
+- if a variable is declared inside a code block (`{...}`) it is only visible inside that block
+- `for(let i =...)`: `i` is declared inside the block
 
+
+## Higher order functions (closures!)
+- ```js
+  function makeCounter() {
+    let count = 0;
+
+    return function() {
+      return count++;
+    };
+  }
+
+  let counter = makeCounter();
+
+  alert( counter() ); // 0
+  alert( counter() ); // 1
+  alert( counter() ); // 2
+  ```
+- Explanation: Lexical Environment!
+  - 1. variables
+    - every running function (code block) and the script as a whole have an associated object called the *Lexical Environment* which consists of
+      - Environment record - stores all **local variables and properties**
+      - reference to outer *lexical environment*
+    - global lexical environment has no *outer* scope so the `outer` is null
+    - the LE is populated as the code gets interpreted, starting with declared variables as `uninitialized` (but will not allow usage until it runs the `let` statement)
+  - 2. function declaration (not expression!)
+    - same as variables, but becomes instantly usable from the start
+  - 3. inner & outer LE
+    - when a function is *ran*, a LE is created for that function to store the properties and the `outer` pointer will point to the scope that the function is called on
+    - when a variable is required, inner LE is searched all the way back up to global LE (if `strict mode` is on, will return error. otherwise it's created)
+    - every function call creates a new LE, but *the reference to the outer LE is only created once*
+    - in this case, the LE is created only at the line `return count++`
+- All functions are naturally closures in JS except `new Function`
+- if a new reference is made to the same function, a **new LE reference** is made so all the properties are reset for the new reference
+- *Definition: function that remembers its outer variables, and can access them*
+
+## Double function calls
+- ```js
+  function sum(a) {
+
+    return function(b) {
+      return a + b; // takes "a" from the outer lexical environment
+    };
+
+  }
+
+  alert( sum(1)(2) ); // 3
+  alert( sum(5)(-1) ); // 4
+  ```
 ---
 # Extras
 
