@@ -387,7 +387,7 @@
 - performance:
   - `pop`/`push` are fast
   - `shift`/`unshift` are slow
-    - needs to renumber all the other elements
+    - needs to re-number all the other elements
     - update length
 - `for(let key of arr)` loop through array/string
 - `for(let key in obj)` loop through object
@@ -401,7 +401,121 @@
   - `new Array(length)`: sets the array as undefined
 - `toString()`: comma separated string 
   - do not have their own `toPrimitive` or `valueOf()` conversion
+- `array.concat(args)`: returns a new array with all args inside (does not modify the original)
+  - way slower than `push()`, but since it returns a new array instead of modifying, it's better for state management (e.g. reducer for react)
+- `array.sort()` (optimized quick sort - divide and conquer: splitting array into "more than" and "less than" until length of 1)
+  - by default, the elements are sorted by strings
+  - to do otherwise, pass in a comparator function
+- `array.from(input)`: converts `input` into an array
 - Other array methods: https://javascript.info/array-methods
+
+## Iterables
+- objects that can be used in `for..of` are iterables
+- `Symbol.iterator` is called automatically by `for...of` but can also self-define
+
+## Map
+- keyed data items
+- `map.delete(key)`: removes key
+- `map.set(key,val)`: creates a mapping
+  - since `map.set` returns the map, you can chain it like `map.set().set()...`
+- `map.get(key)`: gets the mapped value
+- *can use `map[key]` but should not because it is treating the map as regular JS object, which has limitations*
+- can use an object as key! (cannot in normal JS object as it will use `toString()` to convert into `[object Object]` before setting it as key)
+- key comparison:
+  - uses the algorithm `SameValueZero`, which is similar to `===` except `NaN === NaN` (means `NaN` can be a key)
+- uses `for..of` or `forEach` to iterate
+  - insertion order will be output order
+- can change JS object to Map through `new Map(Object.entries(obj))`
+  - will map key => value
+
+## Set
+- unique values
+- `set.add(val)`: adds value
+- `set.delete(val)`: delete
+- iterate using `for..of` or `forEach`
+  - 2 params are the same value for `forEach` to match compatibility with `map`
+  - ```js
+    // the same with forEach:
+    set.forEach((value, valueAgain, set) => {
+      alert(value);
+    });
+    ```
+
+## Destructuring Assignment
+- *destorying* the structore and split into variables
+- can throw unwanted elements in array using additional comma
+- works with any *iterable* (strings)
+- `...`: can use this to get *the rest* of the elements
+- ```js
+  let [name1, name2, ...rest] = ["Julius", "Caesar", "Consul", "of the Roman Republic"];
+
+  alert(name1); // Julius
+  alert(name2); // Caesar
+
+  // Note that type of `rest` is Array.
+  alert(rest[0]); // Consul
+  alert(rest[1]); // of the Roman Republic
+  alert(rest.length); // 2
+  ```
+- object destructoring is more common
+- order doesn't matter (will match keys)
+- ```js
+  let {a,b,c} = this.state;
+  ```
+- can assign by destructoring as well (variable name = key name)
+- `...`: can use this to get *the rest* of the props (same syntax as array - will create object)
+
+## Date Object
+- `new Date()`: creates Date object for *current* time
+- `new Date(num)`: num is the timestamp since Jan 1, 1970
+  - num = 0: Jan 1, 1970
+- `new Date(string)`: runs `Date.parse` to parse the string and return time
+- `Date.now()`: grabs current time
+- JS gets the time from proxy, UTC offset of the client's local env
+
+## JSON
+- `JSON.stringify()`: the resulting `json` string is called *JSON-encoded* or *serialized*
+  - only double quotes - need to work for all languages through API
+  - object prop names are double quotes as well
+  - works for Primitives + object + array
+- since it needs to work for all languages
+  - will skil function properties, symbolic properties, and properties that are *undefined*
+- *there cannot be circular references*
+- `JSON.parse()`: decode the json string
+  - `new` not allowed
+  - allowed custom parse function as 2nd param incase it's a special object (like `Date`)
+
+## Rest parameters
+- `...lastVar`: "gather the remaining params into an array"
+- rest parameter *must* be at the end
+- ```js
+  function sumAll(...args) { // args is the name for the array
+    let sum = 0;
+
+    for (let arg of args) sum += arg;
+
+    return sum;
+  }
+
+  alert( sumAll(1) ); // 1
+  alert( sumAll(1, 2) ); // 3
+  alert( sumAll(1, 2, 3) ); // 6
+  ```
+## Spread
+- opposite of `Rest`: trying to define inputs to a function, not the function's paramters
+- breaks array into separate variables
+- will break any iterable (has internal interator to gather elements)
+  - e.g. `[..."Hello"] -> [H,e,l,l,o]`
+  - only works with iterables
+    - `Array.from()` works with array-like and iterables
+  
+## Argument variable
+- deprecated: used to capture inputs if there are no input params (just log `arguments` in a function without params)
+- arrow functions have no `arguments` variable
+  - similar to `this`, will reference outer "normal" function
+
+## Variable Scope
+
 ---
 # Extras
 
