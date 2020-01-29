@@ -243,7 +243,7 @@
   - evaluated method doesn't
   - *tldr*: `obj.method()` uses the `.` to get the property and then `()` to execute it
   - evaluated methods fail to get this because it becomes `let hi = user.hi` first, which no longer has scoping (global `this` returns undefined)
-    - it assigns it to the IIFE brackets
+    - it assigns it to the external brackets as a temp variable
   - *JavaScript returns using a special type called the 'reference type' which is how the dot and bracket operators work on to get the object reference*
     - `function.bind()` is a useful tool
 
@@ -373,7 +373,35 @@
   - str == str2: return 0
 
 ## Arrays
-
+- ordered collections
+- common usages: stack/queue (known as dequeue (double ended queue))
+  - queue: `push` and `shift`
+  - stack: `push` and `pop`
+- `unshift()`: add to start of array
+- internals:
+  - arrays extend object methods (they use accessors like objects as well `[]`)
+  - copied by reference like object
+  - to make arrays fast, JS engine stores it in a contiguous(right next to each other) area
+  - JS provides optimizations to this "object" to make it fast, but there are ways to "turn it off" or misuse array intrepretations
+    - `arr.prop` -> turns into real object
+- performance:
+  - `pop`/`push` are fast
+  - `shift`/`unshift` are slow
+    - needs to renumber all the other elements
+    - update length
+- `for(let key of arr)` loop through array/string
+- `for(let key in obj)` loop through object
+- `for (let i=0; i<arr.length; i++)` – works fastest, old-browser-compatible.
+- `for (let item of arr)` – the modern syntax for items only,
+- `for (let i in arr)` – never use.
+- `arr.length`: returns the length
+  - can change array length through this property
+  - empty an array `arr.length = 0`
+- `s = []` is the same as `s = new Array();`
+  - `new Array(length)`: sets the array as undefined
+- `toString()`: comma separated string 
+  - do not have their own `toPrimitive` or `valueOf()` conversion
+- Other array methods: https://javascript.info/array-methods
 ---
 # Extras
 
