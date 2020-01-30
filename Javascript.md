@@ -594,9 +594,83 @@
 ## Cache decorators
 - used for "slow" functions that doesn't change - can cache the result using a wrapper object and a `Map()`
 
+## setTimeout and setInterval
+- cannot pass a function execution into setTimeout, it expects a reference (the string)
+- `setTimeout`: returns a timerId, can cancel using `clearTimeout(timerId)`
+- `setInterval`: runs indefinitely by the interval passed in
+  - cancel using `clearInterval(timerid)`
+  - less accurate than *nested setTimeout* because timer starts when the function starts
+  - nested setTimeout: starts the timer after function is finished since it's synchronous
+  - ```js
+    let i = 1;
+    setInterval(incI(i++), 2000); // timer goes right when incI() runs
+
+    let id = setTimeout(function incI(i) {
+      func(i); // function that increases i
+      setTimeout(incI(i), 2000); // runs after func() is done - synchronous
+    }, 2000);
+    ```
+- internal references are created when functions are passed into timer functions so even when no reference exist, it remains in memory (they also reference outer lexical envs as well)
+  - good to clear the timer function when done, so garbage collector can take it away
+
 ## Function Binding
 - recall: passing function with `this` referencing outer object to another value will lose the scoping
-- same with `setTimeout(object.function, 200)` as it separated the function and passed it into timeout
+  - same with `setTimeout(object.function, 200)` as it separated the function and passed it into timeout
+    - `setTimeout` sets the `this` reference to global `window`
+    - solution 1: to fix for `setTimeout`, run a wrapper function
+      `setTimout(() => user.sayHi(), 100); // sayHi uses this reference`
+    - solution 2: `bind(object)`
+      - creates a bounded variant of the function call to the `object` passed in
+      - binding only happens once per object
+
+## Arrow functions
+- has no `this` - access outer lexical environment
+- `forEach` sets `this` to undefined by default for `function(){}`, but since `() => {}` has no `this`, it is uneffected (will reference outer lexical env)
+- not having `this` also means cannot create new with it - cannot be constructors
+- calling `bind` will not work on arrow functions 
+- has no `arguments` variable 
+- has no `super`
+
+## Prototype Inheritance
+- if reading a property from `object` and **it's missing**, JS takes it from the prototype (prototype inheritance)
+- set an object's prototype to another to use their functions
+  - `object1.__proto__ = object2`
+- can set directly within object: `object = {prop: true, __proto__: otherObject}`
+- can chain any number of objects (no cycle) and will inherit all objects chained
+- the value of `__proto__` can only be object or `null`
+- prototypes do not effect `this` - `this` only binds to the object before the dot operator
+
+## Setters and Getters
+- inside the object, you can directly set `set` or `get` functions
+- ```js
+  let user = {
+    name : "asdf",
+    set fullName(value) {
+      this.name = value;
+    }
+    get fullName() {
+      return this.name;
+    }
+  }
+
+## Try...catch
+- runs the `try` code block
+- if no errors, `catch` is ignored
+- if error occurs, the control flows to `catch` and the error object is available
+  - will ignore the rest of `try`
+- only works for runtime errors
+  - parse time: when engine is reading the code
+  - runtime: code is syntactically correct, but something else went wrong
+- only works synchronously (`setTimeout` errors cannot be tested)
+  - must put `try..catch` inside the `setTimeout` so it runs together
+- errors are split into 3 properties
+  - name: error name
+  - message: error details
+  - stack: where it happened
+  - logging errors will show all 3 in a string
+- can throw new errors `return new Error(message)`
+
+## Callbacks
 ---
 # Extras
 
