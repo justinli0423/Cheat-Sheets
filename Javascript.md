@@ -2,6 +2,9 @@
 
 # The Fundamentals
 
+## Polyfilling
+- making a function that doesn't exist due to modern updates
+
 ## Script tag
 - inline JavaScript
 - obselete attributes:
@@ -406,7 +409,7 @@
 - `array.sort()` (optimized quick sort - divide and conquer: splitting array into "more than" and "less than" until length of 1)
   - by default, the elements are sorted by strings
   - to do otherwise, pass in a comparator function
-- `array.from(input)`: converts `input` into an array
+- `Array.from(input)`: converts `input` into an array
 - Other array methods: https://javascript.info/array-methods
 
 ## Iterables
@@ -671,6 +674,115 @@
 - can throw new errors `return new Error(message)`
 
 ## Callbacks
+- async functions will run by itself (e.g. script loading, `setTimeout`, module loading)
+- callbacks are used to ensure the previous async method finishes running
+  - `documentElement.onload` and `documentElement.onerror` are callbacks for when the element is rendered
+- should not use callbacks on deep-nested async chains (use *promises*)
+
+## Promises
+- `let promise = new Promise((resolve, reject) => {})`
+  - the function passed into the `Promise` is called *executor* and it is executed automatically
+  - `resolve` and `reject` are callbacks provided by JS
+    - run these appropriately with respective to your executor
+- initial state of promise = **pending**
+- if it is resolve/rejected, it is in a **settled** state
+- state of "resolved" = **fulfilled**
+  - result: value passed into `resolve(value)`
+- state of "rejected" = **error**
+  - result: error passed into `reject(error)`
+    - recommended to use the `new Error()` object
+- Comsumers (functions that call the promise)
+  - access the result using `promise.then(res, rej)` where res, rej are receiving functions
+- if only interested in errors: `promise.catch(f)` (same as `.then(null, f)`)
+- `.finally()` runs regardless of the settled state
+  - will pass the resolve/reject onto the next `.then` call
+  - ```js
+      new Promise((res, rej) => {
+        res("done!");
+      })
+      .finally() {
+        // will always run here - pass state to next .then
+      }
+      .then(res, rej) => {
+        // value is done 
+      }
+    ```
+- can call many handlers on the same promise
+
+## Promise Chaining
+- flow:
+  - initial promise resolves
+  - first `.then` called
+  - the returned value of the `.then` is passed onto the next `.then`
+- the returned value of `.then` handlers always become the next result of the promise
+- can return a `new Promise()` inside a `.then` call - same effect as a normal promise
+- `.then` can also return a **thenable** object, which acts the same way as a promise inside classes
+
+## Promise - Error handling
+- promises have an invisible `try..catch` in the sense that if error is thrown/rejected, the `catch` will treat it as exception
+  - not only the executor, but in every `.then` statement, the `.catch` after will catch it
+- can chain `.then` after a `.catch` *if* the error is handled properly (returning inside a `.catch` will be a resolved)
+- can also throw another error if it cannot handle (will skip all the `.then` calls until it hits the next `.catch`)
+- if the promise handler has **no error handlers**, it will generate a global error 
+  - can be read using
+    ```js
+    window.addEventListener('unhandledrejection', (ev) => {
+      console.log(ev.promise); // promise that generated the error
+      console.log(ev.reason); // most likely unhandled error
+    });
+    ```
+
+## Promise API
+- wait for `n` promises to resolve: `let promise = Promise.all([...promises])`
+  - if one fails, it will go to error
+  - common trick: use array.map to return a list of promises
+  - *for network request, can transform into object through `response.json()`*
+- wait for `n` promises to settle: `allSettled`
+  ```js
+    Promise.allSettled(/* iterable */)
+    .then(res => {
+      // res.status: fulfilled or rejected
+      // res.value: the value or error
+    })
+  ```
+- wait for first promise to settle and returns the status, value: `Promise.race([...])`
+
+## Promisification (promisfy)
+- process of turning a regular function into a promise
+- creating a wrapper and returning a new promise
+
+## Async- background
+- Event loop checks if call stack is empty or not
+  -  if empty: looks for callbacks in the message queue waiting to be executed
+-  message queue holds all "async" function executions
+-  the event loop will put it on top of the call stack and thus execute it after
+
+## Macrotask and microtask
+- macrotasks: setTimeout, setInterval, setImmediate, requestAnimationFrame, I/O, UI rendering
+- microtasks: process.nextTick, Promises, Object.observe, MutationObserver
+- after **every** macrotask, all microtasks should be ran before the next execution of anything else
+
+## Promises - background
+- ECMA specifies an internal queue `PromiseJobs` or *microtask queue*
+- all `.then`/`.catch`/`.finally` is placed inside the queue
+- execution of the task inside the queue is initiated only when nothing else in the current node is running
+  - ```js
+      let promise = Promise.resolve();
+      promise.then(() => alert("promise done!"));
+      alert("code finished"); // this alert shows first
+    ```
+
+## Async/wait
+- easy way to work with promises
+- keyword `async` infront of function declaration
+  - function now returns a promise!
+- keyword `await`: makes JS wait until promise has settled
+  - can only use **inside async** functions
+  - allows other things to run while this function waits 
+- cannot use async/await in global scope
+- to do error checking inside `async function`, run `try{}catch{}` inside
+- do not need to use `.then` for `async` functions since the `wait` should do the job for you, and use `try..catch` inside
+
 ---
 # Extras
 
