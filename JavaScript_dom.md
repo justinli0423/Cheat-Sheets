@@ -38,7 +38,7 @@
 - cannot use array methods, but *can* use `Array.from()` to transform into a variable
 
 ## DOM traversal
-- `<html>`: `document.docmentElement`
+- `<html>`: `document.documentElement`
 - `<body></body>`: `document.body`
 - `<head></head>`: `document.head`
 - `element.childNodes`: collection of all **child** nodes
@@ -76,6 +76,13 @@
   - `document.getElementsByName(name)`: search `name` attr of elements, document wide
 - `elementA.contains(elementB)`: check if elA == elB or if it is a descendant
 
+## HTMLCollection vs NodeList
+- both are a list of nodes:
+  - `HTMLCollection`: element nodes only (`node.children`)
+  - `NodeList`: every node possible (`node.childNodes`)
+- **array like**: either convert to array through `Array.from(arrlike)` or create prototypes
+- only has index selection and length (`col[i]` and `col.length`)
+
 ## Node properties
 - all DOM nodes correspond to a specific built-in class, but they all inherit from the same class
 - `EventTarget`: the root class that everyone inherits from
@@ -103,7 +110,7 @@
 
 ## outerHTML
 - `innerHTML` + the current element itself
-- when setting `outerHTML:
+- when setting `outerHTML`:
   - the old element is removed
   - the new element is set in its place
   - *if the element was saved to a variable, it is **not** updated*
@@ -123,6 +130,9 @@
 ## hidden
 - returns a boolean for visibility of element
 - same as `style="display:none"`
+
+## Switching position
+- using `el.before(el2)` will place `el2` before `el` **and** removes it from original position
 
 ## Additional props
 - `value`: for input, select, textarea etc
@@ -180,10 +190,31 @@
   - "interactive": document was fully read
   - "complete": all resources are loaded as well
 
+## Bubbling
+- when event handler is assigned to nested components and the most nested component's event handler gets triggered, then the event handler will run, and then the parent, all the way
+- A click on the inner <p> first runs onclick:
+  - On that <p>.
+  - Then on the outer <div>.
+  - Then on the outer <form>.
+  - And so on upwards till the document object.
+- *most* events will bubble *except focus*
+
+## event.target
+- handler on parent can always get where the event actually happened
+- deepest element that caused the event is the *target* event, accessable using `event.target`
+- event propagation can be stopped through `event.stopPropagation()`
+- to stop it running *at the current node* we use `event.stopImmediatePropagation()`
+
+## Debouncing
+ - purposeful throttling: delays an event handler from executing until there has been `x` delay
+ - drastically decreases # of API calls in say, a search bar
+
 ___
 
 
 ## Definitions
+- DOCTYPE: what type of markup to use to render the webpage? (e.g. HTML)
+- UTF-X: uses X bits to encode characters
 - Modal: visitor cannot interact with the rest of the page unless this component is dealt with
 - Host Environment: JS works with many things, the "thing" its working on is the host environment (the host provides additional objects and functions, e.g. browser)
 - child nodes: direct children of depth 1

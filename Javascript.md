@@ -410,6 +410,7 @@
   - by default, the elements are sorted by strings
   - to do otherwise, pass in a comparator function
 - `Array.from(input)`: converts `input` into an array
+- `array.filter(boolean tester)`: *returns* a new array that passes the tester
 - Other array methods: https://javascript.info/array-methods
 
 ## Iterables
@@ -636,6 +637,7 @@
 
 ## Prototype Inheritance
 - if reading a property from `object` and **it's missing**, JS takes it from the prototype (prototype inheritance)
+- *should not be set after creation, JS optimizes highly*
 - set an object's prototype to another to use their functions
   - `object1.__proto__ = object2`
 - can set directly within object: `object = {prop: true, __proto__: otherObject}`
@@ -760,6 +762,7 @@
 ## Macrotask and microtask
 - macrotasks: setTimeout, setInterval, setImmediate, requestAnimationFrame, I/O, UI rendering
 - microtasks: process.nextTick, Promises, Object.observe, MutationObserver
+- JS as a WHOLE is a macrotask
 - after **every** macrotask, all microtasks should be ran before the next execution of anything else
 
 ## Promises - background
@@ -782,6 +785,17 @@
 - cannot use async/await in global scope
 - to do error checking inside `async function`, run `try{}catch{}` inside
 - do not need to use `.then` for `async` functions since the `wait` should do the job for you, and use `try..catch` inside
+
+## Event listeners:
+- JS has built in event listeners e.g. `mousedown`
+- can create custom event emitters and subscribers through the following
+- ```js
+  let event = new EventEmitter();
+  let subHandle = event.subscribe('RUN ME', function callback(val)); //will get 54
+  event.emit('RUN ME', 54);
+
+  // can remove the subscriber through
+  subHandle.release()
 
 ---
 # Extras
@@ -816,3 +830,44 @@
 - **reduces traffic and faster renders**
 
 ### [ECMA2020](https://tc39.es/ecma262/#sec-ordinary-and-exotic-objects-behaviours)
+
+
+## Map vs Object?
+Map:
+- iterable (forEach)
+- object + Map methods
+- cleaner to write
+- anything can be key
+- cannot compute to json
+- preserves ordering
+
+Object:
+- simple
+- must use for(x in y) to iterate (not iterable)
+- much less memory
+- can parse as json
+- need your own iterable
+
+## Check if something is iterable?
+- most likely, only "objects" aren't iterable
+- check using `typeof object[Symbol.iterator]`
+- *symbols are particularly useful for checking properties*
+
+## Call vs Apply vs Bind
+- `call`: calls a function binding to an object *allowing* params using **commas**
+  - `func.call(object, <param1>, <param2>...)`
+- `apply`: calls a function binding to an object *allowing* params using **array**
+  - `func.apply(object, [param1, param2...])`
+- `bind`: returns a new function that is binded to an object. params are passed into the returned function instead
+  - `newFunc = func.bind(object);`
+  - `newFunc(params...)`
+
+## Bind implementation
+```js
+  Function.prototype.bind = function(context) {
+    let fn = this;
+    return function() {
+      fn.apply(context, args);
+    }
+  }
+```
