@@ -407,6 +407,9 @@
 - `array.concat(args)`: returns a new array with all args inside (does not modify the original)
   - way slower than `push()`, but since it returns a new array instead of modifying, it's better for state management (e.g. reducer for react)
 - `array.sort()` (optimized quick sort - divide and conquer: splitting array into "more than" and "less than" until length of 1)
+  - If compareFunction(a, b) returns less than 0, sort a to an index lower than b (i.e. a comes first).
+  - If compareFunction(a, b) returns 0, leave a and b unchanged with respect to each other, but sorted with respect to all different elements. 
+  - If compareFunction(a, b) returns greater than 0, sort b to an index lower than a (i.e. b comes first).
   - by default, the elements are sorted by strings
   - to do otherwise, pass in a comparator function
 - `Array.from(input)`: converts `input` into an array
