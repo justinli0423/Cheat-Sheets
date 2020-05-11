@@ -5,6 +5,8 @@ Gathering of useful cheat sheets, guides, and other useful links for web develop
   - [Vanilla JS](https://github.com/Jli0423/Cheat-Sheets/blob/master/Javascript.md)
   - [JS DOM](https://github.com/Jli0423/Cheat-Sheets/blob/master/Javascript_dom.md)
   - [Angular](https://github.com/Jli0423/Cheat-Sheets/blob/master/Angular.md)
+  - [TypeScript](https://github.com/Jli0423/Cheat-Sheets/blob/master/Typescript.md)
+  - [MobX](https://github.com/Jli0423/Cheat-Sheets/blob/master/MobX.md)
   - [FlexBox](https://css-tricks.com/snippets/css/a-guide-to-flexbox/)
   - [Color code finder](https://color.adobe.com/create/color-wheel/)
   - [BootStrap CSS](https://www.w3schools.com/bootstrap/bootstrap_ref_all_classes.asp)
