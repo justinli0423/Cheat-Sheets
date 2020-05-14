@@ -114,3 +114,103 @@ Typescript also comes with a read-only array `ReadonlyArray<T>` that has all mut
 
 *Note: Variables use `const` while properties use `readonly`*
 
+### Excess Property Checks
+TypeScript will throw error if there are *excess* types that aren't defined as an property
+- to bypass, type assertion is necessary `let mySquare = createSquare({ width: 100} as SquareConfig);`
+- a better way: allow any number/type of properties as long as they are not `color` or `width`
+  ```
+  interface SquareConfig {
+    color?: string;
+    width?: number;
+    [propName: string]: any;
+  }
+  ```
+- last way: assign it to a variable will bypass excess property checks as well
+
+### Function Types
+can use interface to describe `object` and `function` type
+```
+interface SearchFunc {
+  (source: string, subString: string): boolean;
+}
+```
+- the names of parameters do not have to match
+```
+let mySearch: SearchFunc;
+mySearch = function(src: string, sub:string): boolean {
+  // do something
+}
+```
+- TypeScript's contextual typing can infer the argument types so *technically* you do not need to specify typings (this applies to both arguments and return values)
+
+### Indexable Types
+```
+interface StringArray {
+  [index: number]: string;
+}
+```
+- only `string` and `number` can be index signatures
+- JavaScript converts `number` to `string` when indexing: `arr[100] === arr["100"]`
+
+Can also be used to describe the "dictionary" pattern - enforcing all properties match their return type
+```
+interface NumberDictionary {
+  [index: string]: number;
+  length: number; // makes sense
+  name: string // will fail here since the indexer is declared return type of number
+}
+```
+Can be fixed if a `union` is used
+```
+interface NumberDictionary {
+  [index: string]: number | string;
+  length: number; // makes sense
+  name: string // will work now
+}
+```
+Can also be made as `readonly` to prevent assignment to their **indicies**
+```
+interface ReadonlyStringArray {
+  readonly [index: number]: string;
+}
+let myArr: ReadonlyStringArray = ['Alice', 'Bob'];
+myArray[2] = 'Mallory'; // error, cannot assign to indicies
+```
+
+### Class Types (Interface Implementation)
+enforcement of class to meet a particular contract
+```
+interface ClockInterface {
+  currentTime: Date; // property
+  setTime(d: Date): void; // function
+}
+
+class Clock implements ClockInterface {
+  currentTime: Date = new Date();
+  setTime(d: Date) {
+    this.currentTime = d;
+  }
+  constructor(h: number, m: number) { }
+}
+```
+
+*Note: Interface only describes the public side of the class; privates/static will not be checked*
+
+**Recall:**
+- static: shared across all instances
+- instanced: different memory per instance
+  
+To check against static:
+```
+interface ClockConstructor {
+  new (hour: number, minute: number): ClockInterface;
+}
+
+interface ClockInterface {
+  tick(): void;
+}
+
+function createClock(constr: ClockConstructor, hour: number, min: number): ClockInterface {
+  return new ctor(hour, minute);
+}
+
